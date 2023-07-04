@@ -1,7 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-# from authentication.models import CustomUser
-# from django.conf import settings
 from authentication.models import CustomUser
 import uuid
 from django.core.validators import MinValueValidator

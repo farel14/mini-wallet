@@ -1,8 +1,8 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view
 from mini_wallet.response_util import response_wrapper
 from authentication.authorization import validate_get_user_from_request
 from .models import Wallet, Transaction
-from .serializers import WalletSerializer, TransactionSerializer, DepositSerializer, WithdrawalsSerializer
+from .serializers import WalletSerializer, DepositSerializer, WithdrawalsSerializer
 from mini_wallet.utils import parse_bool
 
 @api_view(['GET','POST', 'PATCH'])

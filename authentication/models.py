@@ -3,21 +3,6 @@ import uuid
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 # Create your models here.
-# class CustomUser(models.Model):
-#     customer_xid = models.UUIDField(
-#          default = uuid.uuid4,
-#          editable = False,
-#          unique=True
-#     )
-#     id = models.UUIDField(
-#          primary_key = True,
-#          default = uuid.uuid4,
-#          editable = False
-#          )
-#     access_token = models.CharField(max_length=255, null=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
 class CustomUserManager(BaseUserManager):
      def create_user(self, customer_xid, **extra_fields):
         if not customer_xid:
