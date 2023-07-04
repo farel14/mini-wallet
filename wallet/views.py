@@ -20,17 +20,27 @@ def get_post_patch_wallet_view(request):
         serializer = WalletSerializer(instance=wallet_obj)
         return response_wrapper(serializer.data, 200)
     elif request.method == 'POST':
-        [wallet_obj] = Wallet.objects.get_or_create(status="enabled", owned_by=user)
-        if wallet_obj.status == 'enabled':
-            return response_wrapper("Already enabled", 404)
-        serializer = WalletSerializer(instance=wallet_obj)
-        return response_wrapper(serializer.data, 201)
+        found_wallet_obj = Wallet.objects.get(owned_by=user.id)
+        if found_wallet_obj:
+            if found_wallet_obj.status == "enabled":
+                return response_wrapper("Already enabled", 404)
+            else:
+                found_wallet_obj.status = "enabled"
+                found_wallet_obj.save()
+                serializer = WalletSerializer(instance=found_wallet_obj)
+                return response_wrapper(serializer.data, 201)
+        else:
+            wallet_obj = Wallet.objects.create(status="enabled", owned_by=user.id)
+            serializer = WalletSerializer(instance=wallet_obj)
+            return response_wrapper(serializer.data, 201)
     elif request.method == 'PATCH':
         # parse input
         is_disabled = request.data.get('is_disabled')
         if not is_disabled:
             return response_wrapper("Already disabled", status=400)
         is_disabled_bool = parse_bool(is_disabled)
+        if is_disabled_bool is False:
+            return response_wrapper("Invalid payload", status=400)
         # get wallet
         wallet_obj = Wallet.objects.get(owned_by=user)
         # update wallet
